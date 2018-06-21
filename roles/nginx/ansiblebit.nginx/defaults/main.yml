@@ -1,0 +1,36 @@
+---
+nginx_user: www-data
+nginx_group: www-data
+nginx_root_dir: /var/www
+nginx_conf_file: /etc/nginx/nginx.conf
+nginx_conf_dir: /etc/nginx
+nginx_sites_enabled_dir: "{{ nginx_conf_dir }}/sites-enabled"
+nginx_sites_available_dir: "{{ nginx_conf_dir }}/sites-available"
+nginx_service_name: nginx
+nginx_binary_name: nginx
+nginx_sites_enabled: []
+
+nginx_conf:
+  user: "{{ nginx_user }}"
+  worker_processes: 4
+  pid: /run/nginx.pid
+
+nginx_events:
+  worker_connections: 768
+
+nginx_http:
+  sendfile: "on"
+  tcp_nopush: "on"
+  tcp_nodelay: "on"
+  keepalive_timeout: 65
+  types_hash_max_size: 2048
+  include: /etc/nginx/mime.types
+  default_type: application/octet-stream
+  ssl_protocols: TLSv1 TLSv1.1 TLSv1.2
+  ssl_prefer_server_ciphers: "on"
+  access_log: /var/log/nginx/access.log
+  error_log: /var/log/nginx/error.log
+  gzip: "on"
+  gzip_disable: "msie6"
+
+nginx_sites: {}

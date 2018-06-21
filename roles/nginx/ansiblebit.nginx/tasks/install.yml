@@ -1,0 +1,13 @@
+---
+- name: Install nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Ensure permission for web directory
+  file:
+    path: "{{ nginx_root_dir }}"
+    owner: "{{ nginx_user }}"
+    group: "{{ nginx_group }}"
+    state: directory
