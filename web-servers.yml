@@ -3,7 +3,7 @@
 - name: Provision a web server
   hosts: webservers
   become: yes
-  become_user: root
+  become_user: nginx
   remote_user: nginx
   vars:
     update_apt_cache: yes

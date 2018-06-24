@@ -1,14 +1,14 @@
 - name: setup website with follewing servers
   hosts: all
-  remote_user: user
-  become: yes
-  become_mothod: sodo
+  remote_user: root 
+  #become: yes
+  #become_mothod: sodo
   #remote_user: root
 
   roles:
-    - common
-    - manage-servers
+#    - common
+#    - manage-servers
     - web-servers
-    - applicaton-servers
-    - cache-servers
-    - database-servers
+#    - cache-servers
+#    - application-servers
+#    - 
