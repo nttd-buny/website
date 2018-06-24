@@ -1,72 +1,75 @@
+```
 # tree site/
  
 site/
-©À©¤©¤ production.yml
-©À©¤©¤ stage.yml
-©À©¤©¤ dev.yml
-©À©¤©¤ site.yml
-©À©¤©¤ common.yml
-©À©¤©¤ infra.yml
-©À©¤©¤ application.yml
-©À©¤©¤ system.yml
-©À©¤©¤ group_vars
-©¦   ©À©¤©¤ all
-©¦   ©À©¤©¤ common
-©¦   ©À©¤©¤ infra
-©¦   ©¦   ©À©¤©¤ apigateway
-©¦   ©¦   ©À©¤©¤ messages
-©¦   ©¦   ©À©¤©¤ mail
-©¦   ©¦   ©À©¤©¤ kubernetes
-©¦   ©¦   ©¸©¤©¤ log
-©¦   ©À©¤©¤ application
-©¦   ©¦   ©À©¤©¤ web
-©¦   ©¦   ©À©¤©¤ ap
-©¦   ©¦   ©À©¤©¤ batch
-©¦   ©¦   ©À©¤©¤ cache
-©¦   ©¦   ©¸©¤©¤ database
-©¦   ©À©¤©¤ system
-©¦   ©¦   ©À©¤©¤ elasticsearch
-©¦   ©¦   ©À©¤©¤ nagios
-©¦   ©¦   ©À©¤©¤ jenkins
-©¦   ©¦   ©¸©¤©¤ gitbuck
-©¦   ©¸©¤©¤ templates
-©À©¤©¤ host_vars
-©¦   ©À©¤©¤ common
-©¦   ©À©¤©¤ system
-©¦   ©À©¤©¤ infra
-©¦   ©À©¤©¤ application
-©¦   ©¸©¤©¤ templates
-©¸©¤©¤ roles
-     ©À©¤©¤ common
-     ©À©¤©¤ web
-     ©À©¤©¤ ap
-     ©À©¤©¤ batch
-     ©À©¤©¤ cache
-     ©À©¤©¤ database
-     ©À©¤©¤ apigateway
-     ©À©¤©¤ messages
-     ©À©¤©¤ mail
-     ©À©¤©¤ kubernetes
-     ©À©¤©¤ log
-     ©À©¤©¤ elasticsearch
-     ©À©¤©¤ nagios
-     ©À©¤©¤ jenkins
-     ©À©¤©¤ gitbuck
-     ©¸©¤©¤ templates
-          ©À©¤©¤ tasks
-          ©¦   ©¸©¤©¤ main.yml
-          ©À©¤©¤ handlers
-          ©¦   ©¸©¤©¤ main.yml
-          ©À©¤©¤ templates
-          ©¦   ©¸©¤©¤ ntp.conf.j2
-          ©À©¤©¤ files
-          ©¦   ©À©¤©¤ foo.sh
-          ©¦   ©¸©¤©¤ bar.txt
-          ©À©¤©¤ handlers
-          ©¦   ©¸©¤©¤ main.yml
-          ©À©¤©¤ vars
-          ©¦   ©¸©¤©¤ main.yml
-          ©À©¤©¤ defaults
-          ©¦   ©¸©¤©¤ main.yml
-          ©¸©¤©¤ meta
-               ©¸©¤©¤ main.yml
+â”œâ”€â”€ production.yml
+â”œâ”€â”€ stage.yml
+â”œâ”€â”€ dev.yml
+â”œâ”€â”€ site.yml
+â”œâ”€â”€ common.yml
+â”œâ”€â”€ infra.yml
+â”œâ”€â”€ application.yml
+â”œâ”€â”€ system.yml
+â”œâ”€â”€ group_vars
+â”‚   â”œâ”€â”€ all
+â”‚   â”œâ”€â”€ common
+â”‚   â”œâ”€â”€ infra
+â”‚   â”‚   â”œâ”€â”€ apigateway
+â”‚   â”‚   â”œâ”€â”€ messages
+â”‚   â”‚   â”œâ”€â”€ mail
+â”‚   â”‚   â”œâ”€â”€ kubernetes
+â”‚   â”‚   â””â”€â”€ log
+â”‚   â”œâ”€â”€ application
+â”‚   â”‚   â”œâ”€â”€ web
+â”‚   â”‚   â”œâ”€â”€ ap
+â”‚   â”‚   â”œâ”€â”€ batch
+â”‚   â”‚   â”œâ”€â”€ cache
+â”‚   â”‚   â””â”€â”€ database
+â”‚   â”œâ”€â”€ system
+â”‚   â”‚   â”œâ”€â”€ elasticsearch
+â”‚   â”‚   â”œâ”€â”€ nagios
+â”‚   â”‚   â”œâ”€â”€ jenkins
+â”‚   â”‚   â””â”€â”€ gitbuck
+â”‚   â””â”€â”€ templates
+â”œâ”€â”€ host_vars
+â”‚   â”œâ”€â”€ common
+â”‚   â”œâ”€â”€ system
+â”‚   â”œâ”€â”€ infra
+â”‚   â”œâ”€â”€ application
+â”‚   â””â”€â”€ templates
+â””â”€â”€ roles
+     â”œâ”€â”€ common
+     â”œâ”€â”€ web
+     â”œâ”€â”€ ap
+     â”œâ”€â”€ batch
+     â”œâ”€â”€ cache
+     â”œâ”€â”€ database
+     â”œâ”€â”€ apigateway
+     â”œâ”€â”€ messages
+     â”œâ”€â”€ mail
+     â”œâ”€â”€ kubernetes
+     â”œâ”€â”€ log
+     â”œâ”€â”€ elasticsearch
+     â”œâ”€â”€ nagios
+     â”œâ”€â”€ jenkins
+     â”œâ”€â”€ gitbuck
+     â””â”€â”€ templates
+          â”œâ”€â”€ tasks
+          â”‚   â””â”€â”€ main.yml
+          â”œâ”€â”€ handlers
+          â”‚   â””â”€â”€ main.yml
+          â”œâ”€â”€ templates
+          â”‚   â””â”€â”€ ntp.conf.j2
+          â”œâ”€â”€ files
+          â”‚   â”œâ”€â”€ foo.sh
+          â”‚   â””â”€â”€ bar.txt
+          â”œâ”€â”€ handlers
+          â”‚   â””â”€â”€ main.yml
+          â”œâ”€â”€ vars
+          â”‚   â””â”€â”€ main.yml
+          â”œâ”€â”€ defaults
+          â”‚   â””â”€â”€ main.yml
+          â””â”€â”€ meta
+               â””â”€â”€ main.yml
+
+```
