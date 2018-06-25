@@ -63,8 +63,6 @@ site/
           ├── files
           │   ├── foo.sh
           │   └── bar.txt
-          ├── handlers
-          │   └── main.yml
           ├── vars
           │   └── main.yml
           ├── defaults
