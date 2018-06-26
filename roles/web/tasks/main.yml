@@ -1,0 +1,28 @@
+---
+# tasks file for ansible-centos7-nginx
+- name: Add Nginx YUM repository
+  copy: src=nginx.repo dest=/etc/yum.repos.d/nginx.repo
+
+- name: Copy nginx_signing key
+  copy: src=nginx_signing.key dest=/tmp/nginx_signing.key
+
+- name: Import key
+  rpm_key: state=present key=/tmp/nginx_signing.key
+
+- name: Install latest nginx
+  yum: name=nginx state=latest
+
+- name: Copy template nginx, then restart
+  template: src=nginx.conf.j2 dest=/etc/nginx/nginx.conf backup=yes
+  notify: reload nginx
+
+- name: Create folder conf.d
+  file: path=/etc/nginx/conf.d state=directory
+
+- name: Make sites available
+  template: src={{item}} dest=/etc/nginx/conf.d/{{item}}
+  with_items: nginx_sites
+  when: nginx_sites is defined
+
+- name: Ensure service is started and that it always starts on boot
+  service: name=nginx state=started enabled=yes

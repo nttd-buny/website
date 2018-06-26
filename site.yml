@@ -1,14 +1,4 @@
-- name: setup website with follewing servers
-  hosts: all
-  remote_user: root 
-  #become: yes
-  #become_mothod: sodo
-  #remote_user: root
+---
+- include: application.yml
 
-  roles:
-#    - common
-#    - manage-servers
-    - web-servers
-#    - cache-servers
-#    - application-servers
-#    - 
+

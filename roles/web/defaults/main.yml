@@ -1,0 +1,6 @@
+---
+# defaults file for ansible-centos7-nginx
+nginx_user: nginx 
+nginx_worker_processes: 4
+nginx_worker_connections: 1024
+nginx_pid: /var/run/nginx.pid
