@@ -1,0 +1,30 @@
+user  {{ nginx_user }};
+worker_processes  {{ nginx_worker_processes }};
+
+error_log  {{ nginx_error_log }} warn;
+pid        {{ nginx_pid }};
+
+
+events {
+    worker_connections  {{ nginx_worker_connections }};
+}
+
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+
+    client_max_body_size 8m;
+
+    access_log off;
+
+    sendfile on;
+
+    keepalive_timeout 65;
+
+    location ~* .(jpg|jpeg|png|gif|ico|css|js)$ {
+        expires 365d;
+    }
+
+    include /etc/nginx/conf.d/*.conf;
+}
