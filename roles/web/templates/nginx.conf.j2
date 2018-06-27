@@ -22,9 +22,5 @@ http {
 
     keepalive_timeout 65;
 
-    location ~* .(jpg|jpeg|png|gif|ico|css|js)$ {
-        expires 365d;
-    }
-
     include /etc/nginx/conf.d/*.conf;
 }

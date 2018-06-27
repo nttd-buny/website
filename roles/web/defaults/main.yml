@@ -5,3 +5,6 @@ nginx_worker_processes: 4
 nginx_worker_connections: 1024
 nginx_pid: /var/run/nginx.pid
 nginx_error_log: /var/log/nginx/nginx_error.log
+nginx_open_ports:
+  - 80
+  - 443
