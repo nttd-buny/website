@@ -1,0 +1,12 @@
+---
+- debug: msg="Enabled {{ install_elasticsearch }}"
+
+- name: enable/disable elasticsearch Ansible install
+  include: base.yml
+  when: install_elasticsearch|default(True)
+  tags:
+    - elasticsearch
+
+- service:
+    name: elasticsearch
+    enabled: yes

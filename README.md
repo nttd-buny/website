@@ -1,6 +1,6 @@
 ```
 # tree site/
- 
+
 site/
 ├── production.yml
 ├── stage.yml
@@ -31,7 +31,7 @@ site/
 │   │   ├── jenkins
 │   │   └── gitbuck
 │   └── templates
-├── host_vars
+├── inventory
 │   ├── common
 │   ├── system
 │   ├── infra

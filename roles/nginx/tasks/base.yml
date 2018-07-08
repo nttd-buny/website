@@ -1,0 +1,133 @@
+---
+
+- name: Load a variable file based on the OS type, or a default if not found. Using free-form to specify the file.
+  include_vars: "{{ item }}"
+  with_first_found:
+   - "vars/os-{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}.yml"
+   - "vars/os-{{ ansible_distribution|lower }}.yml"
+   - "vars/os-{{ ansible_os_family|lower }}.yml"
+   - "vars/os-default.yml"
+  loop_control:
+    loop_var: item
+
+- include: install_facts.yml
+  when: nginx__install_facts
+
+- name: Load OS-Specific Tasks
+  include: "{{ item }}"
+  with_first_found:
+   - "os-{{ ansible_distribution|lower }}-{{ ansible_distribution_release }}.yml"
+   - "os-{{ ansible_distribution|lower }}.yml"
+   - "os-{{ ansible_os_family|lower }}.yml"
+   - "os-default.yml"
+
+- name: Create SSL directory
+  file:
+    path: "{{ nginx__ssl_dir }}"
+    state: directory
+    owner: "{{ nginx__nginx_user }}"
+    group: "{{ nginx__shared_group }}"
+    mode: 2775
+
+- name: Create Log directory
+  file:
+    path: "{{ nginx__site_log_dir }}"
+    state: directory
+    owner: "{{ nginx__site_user }}"
+    group: "{{ nginx__shared_group }}"
+    mode: 2775
+
+- name: Make some random entropy
+  command: rngd -r /dev/urandom
+
+- name: Create self-signed SSL cert
+  command: openssl req -new -nodes -x509 -subj "{{nginx__ssl_subj}}" -newkey rsa:2048 -days 65535 -keyout {{ nginx__ssl_dir }}server.key -out {{ nginx__ssl_dir }}server.crt -extensions v3_ca creates={{ nginx__ssl_dir }}server.crt
+
+- name: Generate Diffie-Hellman
+  command: openssl dhparam -out {{ nginx__ssl_dir }}dhparam.pem {{nginx__ssl_dhparam_length}} creates={{ nginx__ssl_dir }}dhparam.pem
+
+- name: Create htdocs directory
+  file:
+    path: "{{ nginx__site_htdocs_dir }}"
+    state: directory
+    owner: "{{ nginx__site_user }}"
+    group: "{{ nginx__shared_group }}"
+    mode: 2775
+
+- name: Creates htdocs media directory
+  file:
+    path: "{{ nginx__site_htdocs_media_dir }}"
+    state: directory
+    owner: "{{ nginx__site_user }}"
+    group: "{{ nginx__shared_group }}"
+    mode: 2775
+
+- name: Creates htdocs static directory
+  file:
+    path: "{{ nginx__site_htdocs_static_dir }}"
+    state: directory
+    owner: "{{ nginx__site_user }}"
+    group: "{{ nginx__shared_group }}"
+    mode: 2775
+
+- name: Create directory
+  file:
+    path: "{{ nginx__site_nginx_dir }}"
+    state: directory
+    owner: "{{ nginx__site_user }}"
+    group: "{{ nginx__shared_group }}"
+    mode: 2775
+
+- name: Copy the nginx base configuration file
+  template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+
+- name: Copy the nginx site configuration file
+  template:
+    src: site.conf.j2
+    dest: "{{ nginx__site_nginx_dir }}site.conf"
+    mode: 0664
+
+- name: Copy the nginx location file
+  template:
+    src: locations.conf.j2
+    dest: "{{ nginx__site_nginx_dir }}locations.conf"
+    mode: 0664
+
+- name: Remove old default configuration
+  file:
+    path: "{{ nginx__conf_dir }}/default"
+    state: absent
+
+- name: Symlink in the new site configuration to site
+  file:
+    src: "{{ nginx__site_nginx_dir }}site.conf"
+    dest: "{{ nginx__conf_dir }}/default"
+    state: link
+    force: true
+
+- name: Create symlink to enable the site configuration
+  file:
+    src: "{{ nginx__conf_dir }}/default"
+    dest: "{{ nginx__default_vhost_path }}"
+    state: link
+  notify: restart nginx
+
+
+- name: "disable Start Nginx on boot"
+  service:
+    name: nginx
+    enabled: false
+  when: nginx__manage_with_supervisord
+
+- name: Copy the supervisor config file for nginx
+  template:
+    src: supervisor-nginx.conf.j2
+    dest: /etc/supervisor/conf.d/nginx.conf
+    owner: root
+    group: root
+  notify: restart nginx
+  when: nginx__manage_with_supervisord

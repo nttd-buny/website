@@ -1,0 +1,16 @@
+---
+# The default shell for a user if none is specified
+users__default_shell: /bin/bash
+# Create home dirs for new users? Set this to false if you manage home
+# directories in some other way.
+users__create_homedirs: true
+
+# Lists of users to create and delete
+users: []
+users_deleted: []
+
+users__site_user: "{{ site_user }}"
+users__shared_group: "{{ shared_group }}"
+users__site_user_home: "{{ site_user_home }}"
+users__site_user_ssh_private_key: "{{ site_user_ssh_private_key }}"
+users__site_user_ssh_private_key_src: "{{ site_user_ssh_private_key_src }}"

@@ -1,0 +1,41 @@
+---
+
+- debug: msg="Ensure Swap File Exists {{ swap__file_path }}"
+
+- name: Create swap file
+  command: dd if=/dev/zero of={{ swap__file_path }} bs=1024 count={{ swap__file_size_kb }}k
+           creates="{{ swap__file_path }}"
+  tags: swap.file.create
+
+- name: Change swap file permissions
+  file: path="{{ swap__file_path }}"
+        owner=root
+        group=root
+        mode=0600
+  tags: swap.file.permissions
+
+- name: Check swap file type
+  command: "file {{ swap__file_path }}"
+  register: swapfile
+  tags: swap.file.mkswap
+
+- name: Make swap file
+  command: "mkswap {{ swap__file_path }}"
+  when: swapfile.stdout.find('swap file') == -1
+  tags: swap.file.mkswap
+
+- name: Write swap entry in fstab
+  mount:
+    name: none
+    src: "{{ swap__file_path }}"
+    fstype: swap
+    opts: sw
+    passno: no
+    dump: no
+    state: present
+  tags: swap.fstab
+
+- name: Mount swap
+  command: "swapon {{ swap__file_path }}"
+  when: ansible_swaptotal_mb < 1
+  tags: swap.file.swapon

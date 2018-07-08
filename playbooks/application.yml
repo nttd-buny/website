@@ -1,9 +1,0 @@
-- name: setup application envorinments
-  hosts: all
-  remote_user: root
-  #become: yes
-  #become_mothod: sodo
-  #remote_user: root
-
-  roles:
-    - web

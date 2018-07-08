@@ -1,0 +1,4 @@
+---
+base__create_swap_file: False
+swap__file_path: /swapfile
+swap__file_size_kb: 512

@@ -1,0 +1,22 @@
+---
+- name: Base states
+  hosts: all
+  vars:
+    - update_apt_cache: yes
+  roles:
+    - role: base
+    - role: unattended
+    - role: timezone
+    - role: ntp
+    - role: supervisor
+    - role: nginx
+    - role: letsencrypt
+    - role: postfix
+    - role: postgres
+    - role: postgis
+    - role: mysql
+    - role: redis
+    #- role: elasticsearch
+    - role: django
+    - role: docker
+    - role: nrpe
