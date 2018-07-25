@@ -1,8 +1,8 @@
---- install base packages
+---
 - name: Base states
   hosts: all
   vars:
     - update_apt_cache: yes
     - install_nginx: True
   roles:
-    - role: nginx
+    - { role: '../roles/nginx' }
