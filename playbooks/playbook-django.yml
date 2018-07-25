@@ -4,4 +4,4 @@
   vars:
     - update_apt_cache: yes
   roles:
-    - role: django
+    - { role: '../roles/django' }
