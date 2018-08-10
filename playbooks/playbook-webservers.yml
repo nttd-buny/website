@@ -1,0 +1,12 @@
+---
+- name: web servers
+  hosts: webservers
+  vars:
+    - update_apt_cache: yes
+  roles:
+    - role: base
+    - role: unattended
+    - role: timezone
+    - role: ntp
+    - role: supervisor
+    - role: docker 
