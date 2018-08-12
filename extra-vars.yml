@@ -1,7 +1,8 @@
 ---
-site_name: "example"
+site_name: "smartfamily"
 db_password: change_me
 git_repo: https://git.example.com/example/example.git
 install_mysql: False
 install_redis: False
 python_version: python2.7
+shared_group: maint

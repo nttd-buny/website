@@ -1,0 +1,98 @@
+---
+#### GLOBAL CONFIG FILE ####
+
+## APP CONFIGURATION ##
+# The name of the app. Should be a slug.
+site_name: "mysite"
+
+# The user that will own all of the project files.
+site_user: "{{site_name}}"
+site_user_home: "/home/{{ site_user }}"
+site_user_ssh_private_key: "{{ site_user_home }}/.ssh/id_rsa"
+
+# If the git_repo is private, specify the path to the ssh private key needed
+# to download that repo. This would be the path to the key on your local machine.
+# i.e. /home/myuser/.ssh/id_rsa
+site_user_ssh_private_key_src: ''
+
+# The group that will be assigned to all of the project files.
+shared_group: "worker"
+
+# The database user the the app will use
+db_user: "{{site_name}}"
+
+# The database password that the app will use
+db_password: "change_me"
+
+# The database name that the app will use.
+db_name: "{{site_name}}"
+
+# The python binary to use in the virtualenv.
+# If using Xenial, use python2.7 or 3.5
+# If using Bionic, use python2.7 or 3.6
+python_version: "python3.5" # "python2.7" or "python3.4" or "python3.5"
+
+# The git repo to checkout.
+git_repo: "https://github.com/chicagopython/chipy.org.git"
+
+# The branch to checkout
+git_branch: "master"
+
+# The top directory under which all project files should reside
+top_dir: "/srv/"
+## END APP CONFIGURATION ##
+
+## PROJECT DIRECTORY LAYOUT ##
+sites_dir: "{{top_dir}}sites/"
+sites_bin_dir: "{{top_dir}}bin/"
+site_dir: "{{sites_dir}}{{site_name}}/"
+htdocs_dir: "{{site_dir}}htdocs/"
+htdocs_media_dir: "{{htdocs_dir}}media/"
+htdocs_static_dir: "{{htdocs_dir}}static/"
+site_log_dir: "{{site_dir}}log/"
+site_run_dir: "{{site_dir}}run/"
+site_etc_dir: "{{site_dir}}etc/"
+site_nginx_dir: "{{site_etc_dir}}nginx/"
+project_dir: "{{site_dir}}proj/"
+virtualenvs_dir: "{{site_dir}}envs/"
+virtualenv_dir_link: "{{virtualenvs_dir}}{{site_name}}"
+virtualenv_dir: "{{virtualenv_dir_link}}/"
+## END PROJECT DIRECTORY LAYOUT ##
+
+## SYSTEM SETTINGS ##
+timezone: "America/Chicago"
+application_runner: "uwsgi" # "uwsgi" or "gunicorn"
+base__create_swap_file: True
+## END SYSTEM SETTINGS ##
+
+## ROLE FLAGS TO ENABLE/DISABLE ##
+install_ntp: True
+install_unattended_updates: True
+install_timezone: True
+
+install_django: True
+install_docker: True
+install_nginx: True
+install_letsencrypt: True
+install_elasticsearch: True
+install_postgis: True
+install_postgres: True
+install_postfix: True
+install_mysql: True
+install_redis: True
+install_nrpe: True
+## END ROLL FLAGS ##
+
+## UNIX USERS ##
+# define list of users here
+users:
+  - username: jjasinski
+    name: Joe Jasinski
+    groups:
+      - "{{shared_group}}"
+    uid: 1010
+    password: '!'
+    ssh_key:
+      - "ssh-rsa AAAAA.... foo@machine"
+    shell: /bin/bash
+## END UNIX USERS ##
