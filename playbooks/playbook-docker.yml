@@ -5,4 +5,5 @@
     - update_apt_cache: yes
     - install_docker: True
   roles:
+    - { role: '../roles/base' }
     - { role: '../roles/docker' } 
