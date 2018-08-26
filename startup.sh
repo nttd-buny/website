@@ -1,35 +1,5 @@
 #!/bin/bash
 #
-#1. confirm exec user'
-echo "perpare for setup: confirm setup user"
-execuser=`whoami | echo`
-if test "${execuser}" = "root"; then
-    sudo su -
-fi
-
-#2. check internet connection access
-echo "test internet connection access"
-testip=`ip r | grep default | cut -d ' ' -f 3`
-if test "${testip}" = ""; then
-    echo "Please check network status"
-    exit 9
-fi
-
-accessflg=`ping -q -w 1 -c 1 ${testip} > /dev/null && echo 0 || echo 9`
-if test $accessflg -ne 0; then
-    echo "Please check network status"
-    exit 9
-fi
-
-#3. check firewall status
-echo "check firewall status"
-if [[ `firewall-cmd --state` = running ]]
-then
-    firewall_status=active
-    systemctl stop firewalld
-    systemctl disable firewalld
-#!/bin/bash
-#
 #1. test exec user
 echo "perpare for setup: confirm setup user"
 execuser=`whoami | echo`
@@ -103,6 +73,3 @@ yum -y install git
 
 #9. install ansible
 yum -y install ansible
-
-# end
-
