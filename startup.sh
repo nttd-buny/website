@@ -1,4 +1,6 @@
-t exec user
+#!/bin/bash
+#
+#1. confirm exec user'
 echo "perpare for setup: confirm setup user"
 execuser=`whoami | echo`
 if test "${execuser}" = "root"; then
