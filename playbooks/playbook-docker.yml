@@ -3,6 +3,7 @@
   hosts: all
   vars:
     - update_apt_cache: yes
+    - install_base: True
     - install_docker: True
   roles:
     - { role: '../roles/base' }

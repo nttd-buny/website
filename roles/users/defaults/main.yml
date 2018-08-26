@@ -6,7 +6,7 @@ users__default_shell: /bin/bash
 users__create_homedirs: true
 
 # Lists of users to create and delete
-users: [maint,docker]
+users: [maint]
 users_deleted: []
 
 users__site_user: "{{ site_user }}"
