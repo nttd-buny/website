@@ -78,3 +78,6 @@ sed -i -e "s/\]$/\]\npriority=5/g" /etc/yum.repos.d/epel.repo
 yum -y install centos-release-scl-rh centos-release-scl
 sed -i -e "s/\]$/\]\npriority=10/g" /etc/yum.repos.d/CentOS-SCLo-scl.repo
 sed -i -e "s/\]$/\]\npriority=10/g" /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+
+#7. install ansible
+yum -y install ansible
