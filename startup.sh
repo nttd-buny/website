@@ -79,5 +79,28 @@ yum -y install centos-release-scl-rh centos-release-scl
 sed -i -e "s/\]$/\]\npriority=10/g" /etc/yum.repos.d/CentOS-SCLo-scl.repo
 sed -i -e "s/\]$/\]\npriority=10/g" /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
 
-#7. install ansible
+#7. install vim
+yum -y install vim-enhanced
+echo "alias vi='vim'" >> /etc/profile
+source /etc/profile
+echo "set history=500000" >> /etc/virc
+echo "set ignorecase" >> /etc/virc
+echo "set smartcase" >> /etc/virc
+echo "set hlsearch" >> /etc/virc
+echo "set incsearch" >> /etc/virc
+echo "set number" >> /etc/virc
+echo "set list" >> /etc/virc
+echo "set showmatch" >> /etc/virc
+echo "set binary noeol" >> /etc/virc
+echo "set autoindent" >> /etc/virc
+echo "syntax on" >> /etc/virc
+echo "set highlight Comment ctermfg=LightCyan" >> /etc/virc
+
+#8. install git
+yum -y install git
+
+#9. install ansible
 yum -y install ansible
+
+# end
+
