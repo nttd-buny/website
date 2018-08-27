@@ -1,5 +1,6 @@
 ---
 site_name: "smartfamily"
+site_user: "docker"
 db_password: change_me
 git_repo: https://git.example.com/example/example.git
 install_mysql: False
