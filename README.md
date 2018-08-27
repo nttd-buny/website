@@ -1,4 +1,9 @@
 ```
+# ansible command
+ansible-playbook -vvvv -i ansible/inventory.ini \
+  --extra-vars "@extra-vars.yml" \
+  ansible/playbooks/playbook-all.yml
+
 # tree site/
 
 site/

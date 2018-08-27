@@ -55,18 +55,18 @@ sed -i -e "s/\]$/\]\npriority=10/g" /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
 yum -y install vim-enhanced
 echo "alias vi='vim'" >> /etc/profile
 source /etc/profile
-echo "set history=500000" >> /etc/virc
-echo "set ignorecase" >> /etc/virc
-echo "set smartcase" >> /etc/virc
-echo "set hlsearch" >> /etc/virc
-echo "set incsearch" >> /etc/virc
-echo "set number" >> /etc/virc
-echo "set list" >> /etc/virc
-echo "set showmatch" >> /etc/virc
-echo "set binary noeol" >> /etc/virc
-echo "set autoindent" >> /etc/virc
-echo "syntax on" >> /etc/virc
-echo "set highlight Comment ctermfg=LightCyan" >> /etc/virc
+echo "set history=500000" >> /etc/vimrc
+echo "set ignorecase" >> /etc/vimrc
+echo "set smartcase" >> /etc/vimrc
+echo "set hlsearch" >> /etc/vimrc
+echo "set incsearch" >> /etc/vimrc
+echo "set number" >> /etc/vimrc
+echo "set list" >> /etc/vimrc
+echo "set showmatch" >> /etc/vimrc
+echo "set binary noeol" >> /etc/vimrc
+echo "set autoindent" >> /etc/vimrc
+echo "syntax on" >> /etc/vimrc
+echo "highlight Comment ctermfg=LightCyan" >> /etc/vimrc
 
 #8. install git
 yum -y install git
