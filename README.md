@@ -1,8 +1,12 @@
 ```
+# ssh comand
+ssh-keygen -t rsa -C "name@example.org"
+ssh-copy-id user@child1.dev
+
 # ansible command
-ansible-playbook -vvvv -i ansible/inventory.ini \
+ansible-playbook -vvvv -i inventory/inventory.ini \
   --extra-vars "@extra-vars.yml" \
-  ansible/playbooks/playbook-all.yml
+  playbooks/playbook-all.yml
 
 # tree site/
 
