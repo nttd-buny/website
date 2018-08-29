@@ -1,9 +1,0 @@
----
-
-- name: Creates Proj directory
-  file:
-    path: "{{sites__project_dir}}"
-    state: directory
-    owner: "{{site_name}}"
-    group: "{{sites__shared_group}}"
-    mode: 2775

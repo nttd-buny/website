@@ -1,125 +1,77 @@
-gitlab-mysql:
-  restart: always
-  image: sameersbn/mysql:latest
-  environment:
-    - DB_USER=gitlab
-    - DB_PASS=password
-    - DB_NAME=gitlabhq_production
-  volumes:
-    - /srv/docker/gitlab/mysql:/var/lib/mysql
-gitlab:
-  restart: always
-  image: sameersbn/gitlab:8.3.2
-  links:
-    - gitlab-redis:redisio
-    - gitlab-mysql:mysql
-  environment:
-    - DEBUG=false
-    - TZ=Asia/Tokyo
-    - GITLAB_TIMEZONE=Tokyo
+version: '2'
 
-    - GITLAB_SECRETS_DB_KEY_BASE=long-and-random-alphanumeric-string
-
-    - GITLAB_HOST=
-    - GITLAB_PORT=
-    - GITLAB_SSH_PORT=
-    - GITLAB_RELATIVE_URL_ROOT=/gitlab
-
-    - GITLAB_NOTIFY_ON_BROKEN_BUILDS=true
-    - GITLAB_NOTIFY_PUSHER=false
-
-    - GITLAB_EMAIL=notifications@example.com
-    - GITLAB_EMAIL_REPLY_TO=noreply@example.com
-    - GITLAB_INCOMING_EMAIL_ADDRESS=reply@example.com
-
-    - GITLAB_BACKUP_SCHEDULE=daily
-    - GITLAB_BACKUP_TIME=01:00
-
-    - SMTP_ENABLED=false
-    - SMTP_DOMAIN=www.example.com
-    - SMTP_HOST=smtp.gmail.com
-    - SMTP_PORT=587
-    - SMTP_USER=mailer@example.com
-    - SMTP_PASS=password
-    - SMTP_STARTTLS=true
-    - SMTP_AUTHENTICATION=login
-
-    - IMAP_ENABLED=false
-    - IMAP_HOST=imap.gmail.com
-    - IMAP_PORT=993
-    - IMAP_USER=mailer@example.com
-    - IMAP_PASS=password
-    - IMAP_SSL=true
-    - IMAP_STARTTLS=false
-  volumes:
-    - /srv/docker/gitlab/gitlab:/home/git/data
-gitlab-redis:
-  restart: always
-  image: sameersbn/redis:latest
-  volumes:
-    - /srv/docker/gitlab/redis:/var/lib/redis
-redmine-mysql:
-  restart: always
-  image: sameersbn/mysql:latest
-  environment:
-    - DB_USER=redmine
-    - DB_PASS=password
-    - DB_NAME=redmine_production
-  volumes:
-    - /srv/docker/redmine/mysql:/var/lib/mysql
-redmine:
-  restart: always
-  image: sameersbn/redmine:latest
-  links:
-    - redmine-mysql:mysql
-  environment:
-    - TZ=Asia/Tokyo
-
-    - REDMINE_PORT=
-    - REDMINE_HTTPS=false
-    - REDMINE_RELATIVE_URL_ROOT=/redmine
-    - REDMINE_SECRET_TOKEN=
-
-    - REDMINE_SUDO_MODE_ENABLED=false
-    - REDMINE_SUDO_MODE_TIMEOUT=15
-
-    - REDMINE_CONCURRENT_UPLOADS=2
-
-    - REDMINE_BACKUP_SCHEDULE=
-    - REDMINE_BACKUP_EXPIRY=
-    - REDMINE_BACKUP_TIME=
-
-    - SMTP_ENABLED=false
-    - SMTP_METHOD=smtp
-    - SMTP_DOMAIN=www.example.com
-    - SMTP_HOST=smtp.gmail.com
-    - SMTP_PORT=587
-    - SMTP_USER=mailer@example.com
-    - SMTP_PASS=password
-    - SMTP_STARTTLS=true
-    - SMTP_AUTHENTICATION=:login
-
-    - IMAP_ENABLED=false
-    - IMAP_HOST=imap.gmail.com
-    - IMAP_PORT=993
-    - IMAP_USER=mailer@example.com
-    - IMAP_PASS=password
-    - IMAP_SSL=true
-    - IMAP_INTERVAL=30
-  volumes:
-    - /srv/docker/redmine/redmine:/home/redmine/data
-jenkins:
-  restart: always
-  image: jenkins:latest
-  environment:
-    - JENKINS_OPTS=--prefix=/jenkins
-  volumes:
-    - /srv/docker/jenkins/jenkins:/var/jenkins_home
-proxy:
-  build: proxy
-  links:
-    - gitlab:gitlab
-    - redmine:redmine
-    - jenkins:jenkins
-  ports:
-    - "80:80"
+services:
+  # LDAP
+  openldap:
+    build: ./openldap
+    container_name: openldap
+    environment:
+      LDAP_ORGANISATION: "example"
+      LDAP_DOMAIN: "example.com"
+      LDAP_ADMIN_PASSWORD: "password"
+    ports:
+      - "10389:389"
+  # LDAP Management Tool
+  phpldapadmin:
+    image: osixia/phpldapadmin:0.7.1
+    container_name: phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: "ldap"
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - "10080:80"
+    links:
+      - "openldap:ldap"
+  # VCS(SCM)
+  gitlab:
+    build: ./gitlab
+    container_name: gitlab
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'http://localhost'
+    ports:
+      - '80:80'
+      - '433:433'
+    links:
+      - "openldap:ldap"
+  # Issue Tracker
+  redmine:
+    image: redmine:3.4.3
+    container_name: redmine
+    ports:
+      - '13000:3000'
+    links:
+      - "openldap:ldap"
+  # Chat
+  mattermost:
+    build: ./mattermost
+    container_name: mattermost
+    ports:
+      - '18065:8065'
+    links:
+      - "gitlab:scm"
+  # CI Management
+  jenkins:
+    image: jenkins/jenkins:2.95
+    container_name: jenkins
+    ports:
+      - '18080:8080'
+      - '50000:50000'
+    links:
+      - "openldap:ldap"
+  # Repository Management
+  nexus:
+    image: sonatype/nexus3:3.6.2
+    container_name: nexus
+    ports:
+      - '18081:8081'
+    links:
+      - "openldap:ldap"
+  # Quality Management(& Report)
+  sonarqube:
+    build: ./sonarqube
+    container_name: sonarqube
+    ports:
+      - '19000:9000'
+    links:
+      - "openldap:ldap"

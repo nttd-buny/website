@@ -1,4 +1,0 @@
----
-
-postfix__server_service: "postfix"
-postfix__enabled_on_startup: True

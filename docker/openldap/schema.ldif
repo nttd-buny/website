@@ -1,0 +1,49 @@
+version: 1
+
+dn: ou=groups,dc=example,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
+dn: cn=project-managers,ou=groups,dc=example,dc=com
+cn: project-managers
+objectclass: groupOfUniqueNames
+objectclass: top
+uniquemember: uid=kazuki,ou=people,dc=example,dc=com
+
+dn: cn=project-developers,ou=groups,dc=example,dc=com
+cn: project-developers
+objectclass: groupOfUniqueNames
+objectclass: top
+uniquemember: uid=user,ou=people,dc=example,dc=com
+uniquemember: uid=kazuki,ou=people,dc=example,dc=com
+
+dn: ou=people,dc=example,dc=com
+objectclass: top
+objectclass: organizationalUnit
+ou: people
+
+dn: uid=kazuki,ou=people,dc=example,dc=com
+cn: Kazuki Shimizu
+mail: kazuki@example.com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+sn: Shimizu
+givenName: Kazuki
+uid: kazuki
+userpassword: {CRYPT}7pnoyta7lRz7M
+
+
+dn: uid=user,ou=people,dc=example,dc=com
+cn: Taro Yamada
+mail: user@example.com
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+sn: Yamada
+givenName: Taro
+uid: user
+userpassword: {CRYPT}SjPCVdR9pFLD6

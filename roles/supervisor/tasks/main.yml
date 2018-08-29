@@ -1,4 +1,0 @@
----
-- include: base.yml
-  tags:
-    - supervisor

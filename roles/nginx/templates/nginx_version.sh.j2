@@ -1,9 +1,0 @@
-#!/bin/bash
-
-NGINX=`which nginx`
-VERSION=`$NGINX -v 2>&1 | awk -F":" '{ print $2 }'| tr -d ' '`
-cat <<EOF
-{
-    "nginx_version" : "$VERSION"
-}
-EOF
