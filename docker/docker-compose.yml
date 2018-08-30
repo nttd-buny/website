@@ -30,8 +30,8 @@ services:
       GITLAB_OMNIBUS_CONFIG: |
         external_url 'http://localhost'
     ports:
-      - '80:80'
-      - '433:433'
+      - '10082:80'
+      - '10433:433'
     links:
       - "openldap:ldap"
   # Issue Tracker
@@ -78,8 +78,13 @@ services:
   proxy:
     build: proxy
     links:
+      - openldap:openldap
+      - phpldapadmin:phpldapadmin
       - gitlab:gitlab
       - redmine:redmine
+      - mattermost:mattermost
       - jenkins:jenkins
+      - nexus:nexus
     ports:
       - "80:80"
+      - "443:443"
