@@ -75,3 +75,11 @@ services:
       - '19000:9000'
     links:
       - "openldap:ldap"
+  proxy:
+    build: proxy
+    links:
+      - gitlab:gitlab
+      - redmine:redmine
+      - jenkins:jenkins
+    ports:
+      - "80:80"
