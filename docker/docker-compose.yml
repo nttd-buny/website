@@ -26,9 +26,6 @@ services:
   gitlab:
     build: ./gitlab
     container_name: gitlab
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'http://localhost'
     ports:
       - '10082:80'
       - '10433:433'
