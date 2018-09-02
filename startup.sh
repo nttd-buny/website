@@ -174,8 +174,8 @@ gitlab-ctl reconfigure
 # modify gitlab config : execute following command manually
 # vim /etc/gitlab/gitlab.rb
 # external_url 'http://yourdomain.com'
-# nginx['listen_port'] = 8080
-# gitlab_workhorse['auth_backend'] = "http://localhost:8081"
-# unicorn['port'] = 8081
+# nginx['listen_port'] = 8081
+# gitlab_workhorse['auth_backend'] = "http://localhost:8082"
+# unicorn['port'] = 8082
 # gitlab-ctl reconfigure
 # gitlab-ctl restart
