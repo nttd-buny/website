@@ -90,3 +90,27 @@ systemctl enable rh-postgresql96-postgresql
 yum --enablerepo=epel -y install redis
 systemctl start redis
 systemctl enable redis
+
+#12. install develop tolls
+#zip unzip
+yum -y install zip unzip
+#java
+yum -y install java-1.8.0-openjdk
+#maven
+curl -LO http://ftp.tsukuba.wide.ad.jp/software/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+tar -xvzf apache-maven-3.5.4-bin.tar.gz -C /opt
+cat <<EOF >> /etc/profile
+export MAVAN_HOME=/opt/apache-maven-3.5.4
+PATH=$PATH:$MAVAN_HOME/bin
+export PATH
+EOF
+source /etc/profile
+#gradle
+curl -LO https://downloads.gradle.org/distributions/gradle-4.10-bin.zip
+unzip -d /opt gradle-4.10-bin.zip
+cat <<EOF >> /etc/profile
+export GRADLE_HOME=/opt/gradle-4.10
+PATH=$PATH:$GRADLE_HOME/bin
+export PATH
+EOF
+source /etc/profile
