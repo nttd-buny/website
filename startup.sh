@@ -1,5 +1,6 @@
 #!/bin/bash
 #
+# This shell can only be executed after OS installed.
 #1. test exec user
 echo "perpare for setup: confirm setup user"
 execuser=`whoami | echo`
@@ -73,3 +74,19 @@ yum -y install git
 
 #9. install ansible
 yum -y install ansible
+
+#10. install postgresql
+yum --enablerepo=centos-sclo-rh -y install rh-postgresql96-postgresql-server
+cat <<EOF >/etc/profile.d/rh-postgresql96.sh
+#!/bin/bash
+source /opt/rh/rh-postgresql96/enable
+export X_SCLS="`scl enable rh-postgresql96 'echo $X_SCLS'`"
+EOF
+postgresql-setup --initdb --unit rh-postgresql96-postgresql 
+systemctl start rh-postgresql96-postgresql
+systemctl enable rh-postgresql96-postgresql 
+
+#11. install redis
+yum --enablerepo=epel -y install redis
+systemctl start redis
+systemctl enable redis
