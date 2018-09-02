@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# This shell can only be executed after OS installed.
+# This shell can only be executed after CentOS7 installed.
 #1. test exec user
 echo "perpare for setup: confirm setup user"
 execuser=`whoami | echo`
@@ -75,7 +75,23 @@ yum -y install git
 #9. install ansible
 yum -y install ansible
 
-#10. install postgresql
+#10. install openldap phpldapadmin
+yum -y install openldap-servers openldap-clients
+cp /usr/share/openldap-servers/DB_CONFIG.example /var/lib/ldap/DB_CONFIG 
+chown ldap. /var/lib/ldap/DB_CONFIG 
+systemctl start slapd 
+systemctl enable slapd 
+
+yum --enablerepo=epel -y install phpldapadmin
+
+#11. install nginx
+yum --enablerepo=epel -y install nginx
+systemctl start nginx 
+systemctl enable nginx
+#firewall-cmd --add-service=http --permanent 
+#firewall-cmd --reload
+
+#12. install postgresql
 yum --enablerepo=centos-sclo-rh -y install rh-postgresql96-postgresql-server
 cat <<EOF >/etc/profile.d/rh-postgresql96.sh
 #!/bin/bash
@@ -86,16 +102,40 @@ postgresql-setup --initdb --unit rh-postgresql96-postgresql
 systemctl start rh-postgresql96-postgresql
 systemctl enable rh-postgresql96-postgresql 
 
-#11. install redis
+#13. install redis
 yum --enablerepo=epel -y install redis
 systemctl start redis
 systemctl enable redis
 
-#12. install develop tolls
+#14. install postfix
+yum -y install postfix
+systemctl restart postfix 
+systemctl enable  postfix
+#firewall-cmd --add-service=smtp --permanent  
+#firewall-cmd --reload 
+
+#15. install nagios
+yum --enablerepo=epel -y install nagios nagios-plugins-{ping,disk,users,procs,load,swap,ssh,http}
+systemctl start nagios 
+systemctl enable nagios 
+systemctl restart httpd
+#firewall-cmd --add-service={http,https} --permanent 
+#firewall-cmd --reload 
+
+#15. install develop tolls
 #zip unzip
 yum -y install zip unzip
 #java
 yum -y install java-1.8.0-openjdk
+#ruby
+yum --enablerepo=centos-sclo-rh -y install rh-ruby25
+scl enable rh-ruby25 bash
+cat <<EOF >/etc/profile.d/rh-ruby25.sh
+#!/bin/bash
+source /opt/rh/rh-ruby25/enable
+export X_SCLS="`scl enable rh-ruby25 'echo $X_SCLS'`"
+EOF
+
 #maven
 curl -LO http://ftp.tsukuba.wide.ad.jp/software/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
 tar -xvzf apache-maven-3.5.4-bin.tar.gz -C /opt
@@ -114,3 +154,19 @@ PATH=$PATH:$GRADLE_HOME/bin
 export PATH
 EOF
 source /etc/profile
+#gitlab
+curl -O https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh 
+sh script.rpm.sh
+yum -y install gitlab-ce
+gitlab-ctl reconfigure
+#readmine
+#mattermost
+#jenkins
+curl -LO /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
+yum install jenkins
+systemctl start jenkins.service
+systemctl enable jenkins.service
+#firewall-cmd --zone=public --permanent --add-port=8080/tcp
+#firewall-cmd --reload
+#sonarqube
