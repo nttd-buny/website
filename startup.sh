@@ -98,9 +98,6 @@ cat <<EOF >/etc/profile.d/rh-postgresql96.sh
 source /opt/rh/rh-postgresql96/enable
 export X_SCLS="`scl enable rh-postgresql96 'echo $X_SCLS'`"
 EOF
-postgresql-setup --initdb --unit rh-postgresql96-postgresql 
-systemctl start rh-postgresql96-postgresql
-systemctl enable rh-postgresql96-postgresql 
 
 #13. install redis
 yum --enablerepo=epel -y install redis
@@ -122,21 +119,12 @@ systemctl restart httpd
 #firewall-cmd --add-service={http,https} --permanent 
 #firewall-cmd --reload 
 
-#15. install develop tolls
-#zip unzip
+#16. install develop tolls
+#16.1 zip unzip
 yum -y install zip unzip
-#java
+#16.2 java
 yum -y install java-1.8.0-openjdk
-#ruby
-yum --enablerepo=centos-sclo-rh -y install rh-ruby25
-scl enable rh-ruby25 bash
-cat <<EOF >/etc/profile.d/rh-ruby25.sh
-#!/bin/bash
-source /opt/rh/rh-ruby25/enable
-export X_SCLS="`scl enable rh-ruby25 'echo $X_SCLS'`"
-EOF
-
-#maven
+#16.3 maven
 curl -LO http://ftp.tsukuba.wide.ad.jp/software/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
 tar -xvzf apache-maven-3.5.4-bin.tar.gz -C /opt
 cat <<EOF >> /etc/profile
@@ -145,7 +133,7 @@ PATH=$PATH:$MAVAN_HOME/bin
 export PATH
 EOF
 source /etc/profile
-#gradle
+#16.4 gradle
 curl -LO https://downloads.gradle.org/distributions/gradle-4.10-bin.zip
 unzip -d /opt gradle-4.10-bin.zip
 cat <<EOF >> /etc/profile
@@ -154,19 +142,32 @@ PATH=$PATH:$GRADLE_HOME/bin
 export PATH
 EOF
 source /etc/profile
-#gitlab
-curl -O https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh 
-sh script.rpm.sh
-yum -y install gitlab-ce
-gitlab-ctl reconfigure
-#readmine
-#mattermost
-#jenkins
-curl -LO /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+#16.5 readmine
+#16.6 mattermost
+#16.7 jenkins
+curl -Lo /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io.key
-yum install jenkins
-systemctl start jenkins.service
-systemctl enable jenkins.service
+yum -y install jenkins
+systemctl enable jenkins
+systemctl start jenkins
 #firewall-cmd --zone=public --permanent --add-port=8080/tcp
 #firewall-cmd --reload
-#sonarqube
+#16.8 sonarqube
+#16.9 init database
+postgresql-setup --initdb --unit rh-postgresql96-postgresql 
+systemctl start rh-postgresql96-postgresql
+systemctl enable rh-postgresql96-postgresql 
+
+#16.10 ruby
+yum --enablerepo=centos-sclo-rh -y install rh-ruby25
+scl enable rh-ruby25 bash
+cat <<EOF >/etc/profile.d/rh-ruby25.sh
+#!/bin/bash
+source /opt/rh/rh-ruby25/enable
+export X_SCLS="`scl enable rh-ruby25 'echo $X_SCLS'`"
+EOF
+#16.11 gitlab
+curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh
+bash script.rpm.sh
+yum -y install gitlab-ce
+gitlab-ctl reconfigure
