@@ -171,3 +171,11 @@ curl -LO https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/scrip
 bash script.rpm.sh
 yum -y install gitlab-ce
 gitlab-ctl reconfigure
+# modify gitlab config : execute following command manually
+# vim /etc/gitlab/gitlab.rb
+# external_url 'http://yourdomain.com'
+# nginx['listen_port'] = 8080
+# gitlab_workhorse['auth_backend'] = "http://localhost:8081"
+# unicorn['port'] = 8081
+# gitlab-ctl reconfigure
+# gitlab-ctl restart
