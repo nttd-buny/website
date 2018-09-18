@@ -161,7 +161,7 @@ systemctl enable rh-postgresql96-postgresql
 #16.10 ruby
 yum --enablerepo=centos-sclo-rh -y install rh-ruby25
 scl enable rh-ruby25 bash
-cat <<EOF >/etc/profile.d/rh-ruby25.sh
+cat <<EOF > /etc/profile.d/rh-ruby25.sh
 #!/bin/bash
 source /opt/rh/rh-ruby25/enable
 export X_SCLS="`scl enable rh-ruby25 'echo $X_SCLS'`"
